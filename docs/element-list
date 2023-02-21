@@ -1,0 +1,10 @@
+org.example
+org.example.commands
+org.example.core
+org.example.core.comparators
+org.example.core.exceptions
+org.example.core.listeners
+org.example.core.managers
+org.example.core.models
+org.example.core.validators
+org.example.interfaces
