@@ -2,14 +2,15 @@ package org.example;
 
 import org.example.core.exceptions.FileAccessException;
 import org.example.core.exceptions.FileDoesNotExist;
-import org.example.core.CLIPrinter;
+import org.example.core.printers.CLIPrinter;
 import org.example.core.Invoker;
-import org.example.core.YAMLHandler;
+import org.example.core.datahandlers.YAMLHandler;
 import org.example.core.validators.FileValidator;
 import org.example.interfaces.IPrinter;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -41,9 +42,11 @@ public class Main {
         try{
             invoker.startListening();
         }
+        catch (NoSuchElementException ex){
+        }
         catch (Exception ex){
             printer.print("Fatal error!\nAll changes will be saved...");
-            invoker.invokeCommand(invoker.getListener().getParser().getCommandsCollection().get("save"));
+            invoker.invokeCommand(invoker.getListener().getCommandsManager().getCommandsCollection().get("save"));
         }
 
 

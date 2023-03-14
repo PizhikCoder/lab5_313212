@@ -1,5 +1,6 @@
 package org.example.core.managers;
 
+import org.example.commands.enums.DataField;
 import org.example.core.ClonesParser;
 import org.example.core.Invoker;
 import org.example.core.comparators.ModelsDefaultComparator;
@@ -19,9 +20,10 @@ public class ModelsManager {
 
     private ArrayList<Long> usedIDs;
     private ArrayDeque<MusicBand> models;
-    private Invoker invoker;
+    private final Invoker invoker;
     private IPrinter printer;
     private String creationDate;
+
 
     public ModelsManager(ArrayDeque<MusicBand> models, Invoker invoker){
         this.invoker = invoker;
@@ -32,35 +34,20 @@ public class ModelsManager {
         printer.print("ModelsManager created.");
     }
 
-    public String getCreationDate() {
-        return creationDate;
-    }
-
-    private void getModelsIDs(){
-        usedIDs = new ArrayList<>();
-        for(MusicBand i : models){
-            usedIDs.add(i.getId());
-        }
-    }
-
-    public ArrayList<Long> getUsedIDs() {
-        return usedIDs;
-    }
-
     /**
      * Creates new model with random ID.
      * @param data data Map for model's constructor.
      * @return new model.
      */
-    public MusicBand createModel(Map<String, Object> data){
+    public MusicBand createModel(Map<DataField, Object> data){
         printer.print("Starting object creating...");
         return new MusicBand(
                 generateId(),
-                (String)data.get("name"),
-                (Coordinates) data.get("coordinates"),
-                (int)data.get("numberOfParticipants"),
-                (MusicGenre)data.get("genre"),
-                (Person) data.get("frontMan")
+                (String)data.get(DataField.NAME),
+                (Coordinates) data.get(DataField.COORDINATES),
+                (int)data.get(DataField.NUMBER_OF_PARTICIPANTS),
+                (MusicGenre)data.get(DataField.GENRE),
+                (Person) data.get(DataField.FRONTMAN)
                 );
     }
 
@@ -70,15 +57,15 @@ public class ModelsManager {
      * @param id Desired id for the model.
      * @return new model.
      */
-    public MusicBand createModel(Map<String, Object> data, long id){
+    public MusicBand createModel(Map<DataField, Object> data, long id){
         printer.print("Starting object creating...");
         return new MusicBand(
                 id,
-                (String)data.get("name"),
-                (Coordinates) data.get("coordinates"),
-                (int)data.get("numberOfParticipants"),
-                (MusicGenre)data.get("genre"),
-                (Person) data.get("frontMan")
+                (String)data.get(DataField.NAME),
+                (Coordinates) data.get(DataField.COORDINATES),
+                (int)data.get(DataField.NUMBER_OF_PARTICIPANTS),
+                (MusicGenre)data.get(DataField.GENRE),
+                (Person) data.get(DataField.FRONTMAN)
         );
     }
 
@@ -104,13 +91,13 @@ public class ModelsManager {
      * @param id Model id.
      * @param data new model data.
      */
-    public void updateModel(long id, HashMap<String, Object> data){
+    public void updateModel(long id, Map<DataField, Object> data){
         MusicBand model = findModelById(id);
-        model.setName((String)data.get("name"));
-        model.setCoordinates((Coordinates) data.get("coordinates"));
-        model.setNumberOfParticipants((int)data.get("numberOfParticipants"));
-        model.setGenre((MusicGenre)data.get("genre"));
-        model.setFrontMan((Person) data.get("frontMan"));
+        model.setName((String)data.get(DataField.NAME));
+        model.setCoordinates((Coordinates) data.get(DataField.COORDINATES));
+        model.setNumberOfParticipants((int)data.get(DataField.NUMBER_OF_PARTICIPANTS));
+        model.setGenre((MusicGenre)data.get(DataField.GENRE));
+        model.setFrontMan((Person) data.get(DataField.FRONTMAN));
     }
 
     /**
@@ -179,5 +166,20 @@ public class ModelsManager {
 
     public ArrayDeque<MusicBand> getModels() {
         return models;
+    }
+
+    public ArrayList<Long> getUsedIDs() {
+        return usedIDs;
+    }
+
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    private void getModelsIDs(){
+        usedIDs = new ArrayList<>();
+        for(MusicBand musicBand : models){
+            usedIDs.add(musicBand.getId());
+        }
     }
 }

@@ -13,7 +13,7 @@ import java.util.Map;
 public class CommandsManager {
     private Boolean isDataCollecting = false;
     private ArrayList<String> data = new ArrayList<>();
-    private Invoker invoker;
+    private final Invoker invoker;
     private Map<String, Command> commandsCollection;
 
     public CommandsManager(Invoker invoker){
@@ -76,7 +76,7 @@ public class CommandsManager {
         if (commandsCollection.containsKey(line)){
             return commandsCollection.get(line);
         }
-        invoker.getPrinter().print("Command does not exist!\nYou can use \"help\" to see full list of allowed commands.");
-        return null;
+        invoker.getPrinter().print("Command does not exist!\nYou can see \"help\" with full list of allowed commands.");
+        return commandsCollection.get("help");
     }
 }

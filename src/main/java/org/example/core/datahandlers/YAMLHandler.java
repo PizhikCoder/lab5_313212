@@ -1,4 +1,4 @@
-package org.example.core;
+package org.example.core.datahandlers;
 
 import org.example.core.models.MusicBand;
 import org.example.interfaces.IDataLoader;

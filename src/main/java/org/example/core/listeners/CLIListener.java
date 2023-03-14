@@ -12,19 +12,16 @@ import java.util.Scanner;
  */
 public class CLIListener implements IListener {
     private Boolean isWorking = false;
-    private CommandsManager parser;
+    private CommandsManager commandsManager;
     private Scanner scanner;
+    private final IPrinter printer;
+    private final Invoker invoker;
 
-    public CommandsManager getParser() {
-        return parser;
-    }
-
-    private Invoker invoker;
     public CLIListener(Invoker invoker){
         this.invoker = invoker;
         printer = invoker.getPrinter();
     }
-    private IPrinter printer;
+
 
     /**
      * Starts listening to commands from the console using Scanner
@@ -34,10 +31,10 @@ public class CLIListener implements IListener {
         isWorking = true;
         printer.print("CLIListener work is started.");
         scanner = new Scanner(System.in);
-        parser = new CommandsManager(invoker);
+        commandsManager = new CommandsManager(invoker);
         while(isWorking){
             String line = scanner.nextLine();
-            parser.parseLine(line);
+            commandsManager.parseLine(line);
         }
     }
 
@@ -63,5 +60,9 @@ public class CLIListener implements IListener {
 
     public Boolean getWorking(){
         return isWorking;
+    }
+
+    public CommandsManager getCommandsManager() {
+        return commandsManager;
     }
 }

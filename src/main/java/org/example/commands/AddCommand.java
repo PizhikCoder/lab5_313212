@@ -1,26 +1,34 @@
 package org.example.commands;
 
+import org.example.commands.enums.DataField;
 import org.example.core.Invoker;
 import org.example.core.models.*;
 import org.example.core.validators.CommandsDataValidator;
-import org.example.core.validators.ModelsValidator;
 import org.example.interfaces.IPrinter;
+import org.example.interfaces.Validator;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The class contains an implementation of the add command
  */
 public class AddCommand extends Command {
-    private Invoker invoker;
+    private final Invoker invoker;
+
+    private final int LOCATION_X_INDEX = 0;
+    private final int LOCATION_Y_INDEX = 1;
+    private final int LOCATION_Z_INDEX = 2;
+    private final int LOCATION_COORDINATES_COUNT = 3;
+    private final int COORDINATE_Y_LIMIT = 742;
 
     public AddCommand(Invoker invoker){
         this.invoker = invoker;
     }
     @Override
     public String execute(String... arguments) {
-        HashMap<String,Object> data = collectData();
+        Map<DataField,Object> data = collectData();
         invoker.getModelsManager().addModels(invoker.getModelsManager().createModel(data));
         return "Object was successfully created!";
     }
@@ -29,50 +37,52 @@ public class AddCommand extends Command {
      * The method is responsible for collecting data from the user.
      * @return Returns an object with data to create a model.
      */
-    public HashMap<String, Object> collectData(){
+    public Map<DataField, Object> collectData(){
         IPrinter printer = invoker.getPrinter();
-        HashMap<String, Object> data = new HashMap<>();
+        Map<DataField, Object> data = new HashMap<>();
         printer.print("Enter Band Name:");
-        data.put("name", CommandsDataValidator.nameCheck(invoker.getListener().nextLine(), invoker.getListener(), invoker.getPrinter(),false));
+        data.put(DataField.NAME, CommandsDataValidator.nameCheck(invoker.getListener().nextLine(), invoker.getListener(), invoker.getPrinter(),false));
 
         printer.print("Enter Coordinates:");
         printer.print("--Enter X(Integer):");
         int x = (int)CommandsDataValidator.numbersCheck(invoker.getListener().nextLine(), invoker.getListener(), printer, Integer.class,false);
+        Validator<Double> yValidator = n->n<=COORDINATE_Y_LIMIT;
         printer.print("--Enter Y(Double, <=742):");
-        double y = (double)CommandsDataValidator.numbersCheck(invoker.getListener().nextLine(), invoker.getListener(), printer, Double.class,false, ModelsValidator.class, "coordinateYCheck");
-        data.put("coordinates", new Coordinates(x,y));
+        double y = (double)CommandsDataValidator.numbersCheck(invoker.getListener().nextLine(), invoker.getListener(), printer, Double.class,false, yValidator);
+        data.put(DataField.COORDINATES, new Coordinates(x,y));
 
+        Validator<Integer> numberOfParticipantsValidator = n->n>0;
         printer.print("Enter number of participants(must be > 0):");
-        data.put("numberOfParticipants", CommandsDataValidator.numbersCheck(invoker.getListener().nextLine(), invoker.getListener(), printer, Integer.class,false, ModelsValidator.class, "numberOfParticipantsValueCheck"));
+        data.put(DataField.NUMBER_OF_PARTICIPANTS, CommandsDataValidator.numbersCheck(invoker.getListener().nextLine(), invoker.getListener(), printer, Integer.class,false, numberOfParticipantsValidator));
 
         printer.print("Enter genre of music, please.");
         printer.print("Available genres: " + Arrays.toString(MusicGenre.values()));
-        data.put("genre", (MusicGenre)CommandsDataValidator.enumCheck(invoker.getListener().nextLine(), invoker.getListener(), printer, MusicGenre.class, true));
+        data.put(DataField.GENRE, (MusicGenre)CommandsDataValidator.enumCheck(invoker.getListener().nextLine(), invoker.getListener(), printer, MusicGenre.class, true));
 
 
         String name;
         Float height;
         Country nationality;
-        Number[] loactionData = new Number[3];
-        invoker.getListener();
+        Number[] locationData = new Number[LOCATION_COORDINATES_COUNT];
         printer.print("Enter person's params:");
         printer.print("--Enter person's name(Not null):");
         name = CommandsDataValidator.nameCheck(invoker.getListener().nextLine(),invoker.getListener(),printer,false);
         printer.print("--Enter person's height(Float >0):");
-        height = (Float)CommandsDataValidator.numbersCheck(invoker.getListener().nextLine(),invoker.getListener(),printer,Float.class,true, ModelsValidator.class, "personHeightValueCheck");
+        Validator<Float> heightValidator = n->n==null || n>0;
+        height = (Float)CommandsDataValidator.numbersCheck(invoker.getListener().nextLine(),invoker.getListener(),printer,Float.class,true, heightValidator);
         printer.print("--Enter nationality.");
         printer.print("--Available nationalities: " + Arrays.toString(Country.values()));
         nationality = CommandsDataValidator.enumCheck(invoker.getListener().nextLine(),invoker.getListener(),printer,Country.class, false);
         printer.print("--Enter location params.");
         printer.print("----Enter X(Integer):");
-        loactionData[0] = CommandsDataValidator.numbersCheck(invoker.getListener().nextLine(),invoker.getListener(),printer,Integer.class,false);
+        locationData[LOCATION_X_INDEX] = CommandsDataValidator.numbersCheck(invoker.getListener().nextLine(),invoker.getListener(),printer,Integer.class,false);
         printer.print("----Enter Y(Float):");
-        loactionData[1] = CommandsDataValidator.numbersCheck(invoker.getListener().nextLine(),invoker.getListener(),printer,Float.class,false);
+        locationData[LOCATION_Y_INDEX] = CommandsDataValidator.numbersCheck(invoker.getListener().nextLine(),invoker.getListener(),printer,Float.class,false);
         printer.print("----Enter Z(Float):");
-        loactionData[2] = CommandsDataValidator.numbersCheck(invoker.getListener().nextLine(),invoker.getListener(),printer,Float.class,false);
-        Location location = new Location((int)loactionData[0],  (Float)loactionData[1], (Float) loactionData[2]);
+        locationData[LOCATION_Z_INDEX] = CommandsDataValidator.numbersCheck(invoker.getListener().nextLine(),invoker.getListener(),printer,Float.class,false);
+        Location location = new Location((int)locationData[LOCATION_X_INDEX],  (Float)locationData[LOCATION_Y_INDEX], (Float) locationData[LOCATION_Z_INDEX]);
         Person person = new Person(name,height,nationality,location);
-        data.put("frontMan", person);
+        data.put(DataField.FRONTMAN, person);
 
         return data;
     }

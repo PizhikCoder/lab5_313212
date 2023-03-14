@@ -1,10 +1,7 @@
 package org.example.core;
 
 import org.example.commands.Command;
-import org.example.core.exceptions.CommandParamsException;
-import org.example.core.exceptions.FileAccessException;
-import org.example.core.exceptions.FileDoesNotExist;
-import org.example.core.exceptions.RecursionLimitException;
+import org.example.core.exceptions.*;
 import org.example.core.listeners.CLIListener;
 import org.example.core.managers.ModelsManager;
 import org.example.core.models.MusicBand;
@@ -73,8 +70,9 @@ public class Invoker {
                 printer.print(command.execute(arguments));
             }
         }
-        catch (RecursionLimitException | FileAccessException | CommandParamsException | FileDoesNotExist ex){
-            printer.print("Something went wrong while working with command...");
+        catch (RecursionException | FileAccessException | CommandParamsException | FileDoesNotExist |
+               ArgumentLimitsException ex){
+            printer.print("Something went wrong while working with command.");
             printer.print(ex.getMessage());
         }
     }

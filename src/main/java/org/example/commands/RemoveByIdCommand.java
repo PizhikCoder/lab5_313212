@@ -8,20 +8,22 @@ import org.example.core.validators.CommandsDataValidator;
  * The class contains an implementation of the remove_by_id command
  */
 public class RemoveByIdCommand extends Command{
-    private Invoker invoker;
+    private final Invoker invoker;
+    private final int EXPECTED_ARGUMENTS_COUNT = 1;
+    private final int ID_INDEX = 0;
     public RemoveByIdCommand(Invoker invoker) {
         this.invoker = invoker;
     }
 
     @Override
-    public String execute(String... args) throws RecursionLimitException, FileAccessException, CommandParamsException, FileDoesNotExist {
+    public String execute(String... args) throws RecursionException, FileAccessException, CommandParamsException, FileDoesNotExist {
         if (args.length == 0){
-            throw new CommandParamsException("Received 0 arguments, expected 1.");
+            throw new CommandParamsException(0, EXPECTED_ARGUMENTS_COUNT);
         }
         if (invoker.getModelsManager().getModels().size() == 0){
             return "Collection is empty!";
         }
-        long id = (long)CommandsDataValidator.numbersCheck(args[0], invoker.getListener(),invoker.getPrinter(), Long.class, false);
+        long id = (long)CommandsDataValidator.numbersCheck(args[ID_INDEX], invoker.getListener(),invoker.getPrinter(), Long.class, false);
         invoker.getModelsManager().removeById(id);
         return "Remove By Id command executed!";
     }

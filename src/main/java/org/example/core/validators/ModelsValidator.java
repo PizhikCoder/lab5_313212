@@ -40,6 +40,7 @@ public class ModelsValidator {
         return validatedClones.toArray(toReturn);
     }
 
+
     /**
      * Checks the only one model.
      * @param musicBand
@@ -119,12 +120,13 @@ public class ModelsValidator {
             return false;
         }
     }
+
+
     /**
      * Checks coordinate Y validity.
      * @param Y
      * @return validating result.
      */
-
     public static boolean coordinateYCheck(double Y){
         if (Y>742){
             return false;
@@ -173,6 +175,7 @@ public class ModelsValidator {
             return true;
         }
     }
+
     /**
      * Checks nationality validity.
      * @param country
@@ -180,7 +183,7 @@ public class ModelsValidator {
      */
 
     public static boolean nationalityValueCheck(Country country){
-        if (!Arrays.stream(country.values()).toList().contains(country)){
+        if (country == null){
             return false;
         }
         else {

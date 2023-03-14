@@ -4,19 +4,19 @@ import org.example.core.Invoker;
 import org.example.core.exceptions.CommandParamsException;
 import org.example.core.exceptions.FileAccessException;
 import org.example.core.exceptions.FileDoesNotExist;
-import org.example.core.exceptions.RecursionLimitException;
+import org.example.core.exceptions.RecursionException;
 import org.example.core.models.MusicBand;
 
 /**
  * The class contains an implementation of the show command
  */
 public class ShowCommand extends Command{
-    private Invoker invoker;
+    private final Invoker invoker;
     public ShowCommand(Invoker invoker){
         this.invoker = invoker;
     }
     @Override
-    public String execute(String... args) throws RecursionLimitException, FileAccessException, CommandParamsException, FileDoesNotExist {
+    public String execute(String... args) throws RecursionException, FileAccessException, CommandParamsException, FileDoesNotExist {
         for (MusicBand musicBand : invoker.getModelsManager().getModels()){
             invoker.getPrinter().print(musicBand.toString());
         }

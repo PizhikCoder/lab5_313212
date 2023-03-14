@@ -22,5 +22,5 @@ public interface IListener {
      */
     String nextLine();
     Boolean getWorking();
-    CommandsManager getParser();
+    CommandsManager getCommandsManager();
 }

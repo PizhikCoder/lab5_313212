@@ -15,7 +15,7 @@ public class FileListener implements IListener {
     private String filePath;
     private Boolean isWorking;
     private BufferedReader reader;
-    private Invoker invoker;
+    private final Invoker invoker;
     private CommandsManager parser;
 
     public FileListener(String filePath, Invoker invoker){
@@ -32,10 +32,11 @@ public class FileListener implements IListener {
         createReader();
         parser = new CommandsManager(invoker);
         try{
-            String line ="";
-            while (line!=null && isWorking){
+            String line;
+            while (isWorking){
                 line = reader.readLine();
                 if (line == null){
+                    isWorking = false;
                     break;
                 }
                 parser.parseLine(line);
@@ -86,7 +87,7 @@ public class FileListener implements IListener {
     }
 
     @Override
-    public CommandsManager getParser() {
+    public CommandsManager getCommandsManager() {
         return parser;
     }
 
