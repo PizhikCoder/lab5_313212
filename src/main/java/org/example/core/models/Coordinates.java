@@ -1,5 +1,8 @@
 package org.example.core.models;
 
+import org.example.core.Invoker;
+import org.example.core.exceptions.FieldValueIsNotCorrectException;
+
 import java.util.Objects;
 
 public class Coordinates {
@@ -9,8 +12,8 @@ public class Coordinates {
     private Coordinates(){}
 
     public Coordinates(int x, double y) {
-        this.x = x;
-        this.y = y;
+        setX(x);
+        setY(y);
     }
 
     public int getX() {
@@ -26,7 +29,12 @@ public class Coordinates {
     }
 
     public void setY(double y) {
-        this.y = y;
+        if (y<=742 || Invoker.getIsDataLoading()){
+            this.y = y;
+        }
+        else {
+            throw new FieldValueIsNotCorrectException();
+        }
     }
 
     @Override

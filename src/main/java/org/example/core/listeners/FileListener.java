@@ -90,6 +90,4 @@ public class FileListener implements IListener {
     public CommandsManager getCommandsManager() {
         return parser;
     }
-
-
 }

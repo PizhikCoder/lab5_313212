@@ -4,7 +4,6 @@ import org.example.commands.enums.DataField;
 import org.example.core.Invoker;
 import org.example.core.exceptions.*;
 import org.example.core.validators.CommandsDataValidator;
-
 import java.util.Map;
 
 /**
@@ -25,7 +24,7 @@ public class AddIfMinCommand extends Command{
             throw new CommandParamsException(0,EXPECTED_ARGUMENTS_COUNT);
         }
         long id = (long)CommandsDataValidator.numbersCheck(args[ID_INDEX], invoker.getListener(),invoker.getPrinter(), Long.class, false);
-        if (id<0){
+        if (id<=0){
             throw new ArgumentLimitsException(0);
         }
 

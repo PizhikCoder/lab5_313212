@@ -4,12 +4,9 @@ import org.example.commands.enums.DataField;
 import org.example.core.ClonesParser;
 import org.example.core.Invoker;
 import org.example.core.comparators.ModelsDefaultComparator;
-import org.example.core.models.Coordinates;
-import org.example.core.models.MusicBand;
-import org.example.core.models.MusicGenre;
-import org.example.core.models.Person;
+import org.example.core.models.*;
+import org.example.core.validators.ModelsValidator;
 import org.example.interfaces.IPrinter;
-
 import java.time.ZonedDateTime;
 import java.util.*;
 
@@ -82,8 +79,10 @@ public class ModelsManager {
      * @param model Model object.
      */
     public void addModels(MusicBand model){
-        models.add(model);
-        sort();
+        if(ModelsValidator.modelCheck(new MusicBandClone(model))){
+            models.add(model);
+            sort();
+        }
     }
 
     /**

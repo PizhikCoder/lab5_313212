@@ -1,5 +1,7 @@
 package org.example.core.models;
 
+import org.example.core.Invoker;
+import org.example.core.exceptions.FieldValueIsNotCorrectException;
 import org.example.core.validators.ModelsValidator;
 
 public class Person {
@@ -11,10 +13,10 @@ public class Person {
     private Person(){}
 
     public Person( String name, Float height,  Country nationality,  Location location) {
-        this.name = name;
-        this.height = height;
-        this.nationality = nationality;
-        this.location = location;
+        setName(name);
+        setHeight(height);
+        setNationality(nationality);
+        setLocation(location);
     }
 
     public String getName() {
@@ -34,19 +36,39 @@ public class Person {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (!name.isBlank() || Invoker.getIsDataLoading()){
+            this.name = name;
+        }
+        else {
+            throw new FieldValueIsNotCorrectException();
+        }
     }
 
     public void setHeight(Float height) {
-        this.height = height;
+        if (height == null || height > 0 || Invoker.getIsDataLoading()){
+            this.height = height;
+        }
+        else {
+            throw new FieldValueIsNotCorrectException();
+        }
     }
 
     public void setNationality(Country nationality) {
-        this.nationality = nationality;
+        if (nationality != null || Invoker.getIsDataLoading()){
+            this.nationality = nationality;
+        }
+        else {
+            throw new FieldValueIsNotCorrectException();
+        }
     }
 
     public void setLocation(Location location) {
-        this.location = location;
+        if (location != null || Invoker.getIsDataLoading()){
+            this.location = location;
+        }
+        else {
+            throw new FieldValueIsNotCorrectException();
+        }
     }
 
     @Override

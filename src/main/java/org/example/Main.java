@@ -7,7 +7,6 @@ import org.example.core.Invoker;
 import org.example.core.datahandlers.YAMLHandler;
 import org.example.core.validators.FileValidator;
 import org.example.interfaces.IPrinter;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.NoSuchElementException;
@@ -38,7 +37,6 @@ public class Main {
                 System.exit(0);
             }
         }
-
         try{
             invoker.startListening();
         }
@@ -48,7 +46,5 @@ public class Main {
             printer.print("Fatal error!\nAll changes will be saved...");
             invoker.invokeCommand(invoker.getListener().getCommandsManager().getCommandsCollection().get("save"));
         }
-
-
     }
 }

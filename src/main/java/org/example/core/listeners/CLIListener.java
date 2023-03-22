@@ -13,9 +13,9 @@ import java.util.Scanner;
 public class CLIListener implements IListener {
     private Boolean isWorking = false;
     private CommandsManager commandsManager;
-    private Scanner scanner;
     private final IPrinter printer;
     private final Invoker invoker;
+    private Scanner scanner;
 
     public CLIListener(Invoker invoker){
         this.invoker = invoker;
@@ -28,12 +28,12 @@ public class CLIListener implements IListener {
      */
     @Override
     public void start() {
+        scanner = new Scanner(System.in);
         isWorking = true;
         printer.print("CLIListener work is started.");
-        scanner = new Scanner(System.in);
         commandsManager = new CommandsManager(invoker);
         while(isWorking){
-            String line = scanner.nextLine();
+            String line = nextLine();
             commandsManager.parseLine(line);
         }
     }
@@ -51,6 +51,7 @@ public class CLIListener implements IListener {
      */
     @Override
     public String nextLine() {
+        System.out.printf(">");
         return scanner.nextLine();
     }
 

@@ -1,10 +1,14 @@
 package org.example.core.validators;
 
 import org.example.core.exceptions.InvalidArgumentsLimitsException;
+import org.example.core.models.MusicGenre;
 import org.example.interfaces.IListener;
 import org.example.interfaces.IPrinter;
 import org.example.interfaces.Validator;
 
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -50,6 +54,7 @@ public class CommandsDataValidator {
                 return null;
             }
             if (clazz == Float.class){
+                line = line.replace(",", ".");
                 if (args.length==0 || args[VALIDATOR_INDEX].validate(Float.parseFloat(line))){
                     return Float.parseFloat(line);
                 }
@@ -62,6 +67,7 @@ public class CommandsDataValidator {
                 throw new InvalidArgumentsLimitsException("Check values limits.");
             }
             if(clazz == Double.class){
+                line = line.replace(",", ".");
                 if (args.length==0 || args[VALIDATOR_INDEX].validate(Double.parseDouble(line))){
                     return Double.parseDouble(line);
                 }
@@ -101,6 +107,12 @@ public class CommandsDataValidator {
             if (line.isBlank()  && allowedNull){
                 return null;
             }
+            try {
+                int index = Integer.parseInt(line);
+                Object value = ((Object[]) enumClass.getMethod("values", null).invoke(null))[index-1];
+                return (E)value;
+            }
+            catch (NumberFormatException ex){}
             return (E)E.valueOf(enumClass,line.toUpperCase());
         }
         catch (Exception ex){

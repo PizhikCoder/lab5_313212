@@ -1,5 +1,7 @@
 package org.example.core.models;
 
+import org.example.core.Invoker;
+import org.example.core.exceptions.FieldValueIsNotCorrectException;
 import org.example.core.validators.ModelsValidator;
 import java.time.ZonedDateTime;
 
@@ -16,23 +18,23 @@ public class MusicBand {
     private Person frontMan;
 
     public MusicBand(long id, String name, Coordinates coordinates, int numberOfParticipants, MusicGenre genre, Person frontMan){
-        this.id = id;
-        this.name = name;
-        this.coordinates = coordinates;
-        this.creationDate = ZonedDateTime.now();
-        this.numberOfParticipants = numberOfParticipants;
-        this.genre = genre;
-        this.frontMan = frontMan;
+        setId(id);
+        setName(name);
+        setCoordinates(coordinates);
+        setCreationDate(ZonedDateTime.now());
+        setNumberOfParticipants(numberOfParticipants);
+        setGenre(genre);
+        setFrontMan(frontMan);
     }
 
     public MusicBand(MusicBandClone musicBandClone){
         this.id = musicBandClone.getId();
-        this.name = musicBandClone.getName();
-        this.coordinates = musicBandClone.getCoordinates();
-        this.creationDate = ZonedDateTime.parse(musicBandClone.getCreationDate());
-        this.numberOfParticipants = musicBandClone.getNumberOfParticipants();
-        this.genre = musicBandClone.getGenre();
-        this.frontMan = musicBandClone.getFrontMan();
+        setName(musicBandClone.getName());
+        setCoordinates(musicBandClone.getCoordinates());
+        setCreationDate(ZonedDateTime.parse(musicBandClone.getCreationDate()));
+        setNumberOfParticipants(musicBandClone.getNumberOfParticipants());
+        setGenre(musicBandClone.getGenre());
+        setFrontMan(musicBandClone.getFrontMan());
     }
 
 
@@ -60,36 +62,66 @@ public class MusicBand {
         return genre;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public Person getFrontMan() {
+        return frontMan;
+    }
+
+    private void setId(long id) {
+        if (id>0 || Invoker.getIsDataLoading()){
+            this.id = id;
+        }
+        else{
+            throw new FieldValueIsNotCorrectException();
+        }
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (!name.isBlank() || Invoker.getIsDataLoading()){
+            this.name = name;
+        }
+        else {
+            throw new FieldValueIsNotCorrectException();
+        }
     }
 
     public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
+        if (coordinates != null || Invoker.getIsDataLoading()){
+            this.coordinates = coordinates;
+        }
+        else {
+            throw new FieldValueIsNotCorrectException();
+        }
     }
 
     public void setCreationDate(ZonedDateTime creationDate) {
-        this.creationDate = creationDate;
+        if (creationDate!=null || Invoker.getIsDataLoading()){
+            this.creationDate = creationDate;
+        }
+        else {
+            throw new FieldValueIsNotCorrectException();
+        }
     }
 
     public void setNumberOfParticipants(int numberOfParticipants) {
-        this.numberOfParticipants = numberOfParticipants;
+        if (numberOfParticipants > 0 || Invoker.getIsDataLoading()){
+            this.numberOfParticipants = numberOfParticipants;
+        }
+        else {
+            throw new FieldValueIsNotCorrectException();
+        }
     }
 
     public void setGenre(MusicGenre genre) {
         this.genre = genre;
     }
 
-    public Person getFrontMan() {
-        return frontMan;
-    }
-
     public void setFrontMan(Person frontMan) {
-        this.frontMan = frontMan;
+        if (frontMan != null || Invoker.getIsDataLoading()){
+            this.frontMan = frontMan;
+        }
+        else {
+            throw new FieldValueIsNotCorrectException();
+        }
     }
 
     @Override

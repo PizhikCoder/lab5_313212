@@ -13,4 +13,8 @@ public interface IDataLoader {
      * @param <T>
      */
     <T> T load(Class<T> clazz);
+
+    boolean getIsDataLoading();
+
+    void setIsDataLoading(boolean status);
 }

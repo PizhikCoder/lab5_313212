@@ -1,9 +1,9 @@
 package org.example.core.printers;
 
 import org.example.interfaces.IPrinter;
-
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * Contains logic for CLI output.

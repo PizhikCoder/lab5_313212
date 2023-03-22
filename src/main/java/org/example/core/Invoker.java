@@ -15,6 +15,7 @@ import java.util.ArrayDeque;
  * Main class. Contains all the logic for linking all classes of the programme.
  */
 public class Invoker {
+    private static boolean isDataLoading = false;
     private IPrinter printer;
     private ModelsManager modelsManager;
     private IListener listener;
@@ -35,6 +36,7 @@ public class Invoker {
      */
     public void loadData(){
         printer.print("Data loading started...");
+        isDataLoading = true;
         ArrayDeque<MusicBand> queue = new ArrayDeque<>();
         try{
             MusicBand[] arr = ClonesParser.toOrigs(ModelsValidator.modelsCheck(dataLoader.load(MusicBandClone[].class), this));
@@ -46,6 +48,8 @@ public class Invoker {
             printer.print("Something went wrong while file was loading(or file is empty)!");
 
         }
+
+        isDataLoading = false;
         modelsManager.addModels(queue);
         modelsManager.sort();
         printer.print("Data loading finished.");
@@ -77,6 +81,9 @@ public class Invoker {
         }
     }
 
+    public static boolean getIsDataLoading(){
+        return isDataLoading;
+    }
     public IPrinter getPrinter() {
         return printer;
     }

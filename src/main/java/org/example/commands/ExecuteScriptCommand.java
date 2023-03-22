@@ -8,10 +8,6 @@ import org.example.core.exceptions.RecursionException;
 import org.example.core.listeners.FileListener;
 import org.example.core.validators.FileValidator;
 import org.example.interfaces.IListener;
-
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
@@ -22,7 +18,7 @@ public class ExecuteScriptCommand extends Command {
     private IListener listener;
     private static LinkedList<IListener> listenersQueue = new LinkedList<>();
     private static boolean recursionFlag = false;
-    private static ArrayList<String> pathChain = new ArrayList<>();
+    private static LinkedList<String> pathChain = new LinkedList<>();
     private final Invoker invoker;
     private final int PATH_INDEX = 0;
     private final int EXPECTED_ARGUMENTS_COUNT = 1;
@@ -52,9 +48,17 @@ public class ExecuteScriptCommand extends Command {
             }
         }
         if (recursionFlag){
+            if(this.listener.equals(listenersQueue.getFirst())){
+                listenersQueue = new LinkedList<>();
+                recursionFlag = false;
+            }
             return "";
         }
-        return "Script was successfully executed!";
+        if(listener.equals(listenersQueue.getFirst())){
+            listenersQueue = new LinkedList<>();
+            return "Script was successfully executed!";
+        }
+        return "";
     }
 
     private boolean recursionCheck(String filePath){

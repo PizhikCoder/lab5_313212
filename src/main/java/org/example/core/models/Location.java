@@ -1,6 +1,9 @@
 package org.example.core.models;
 
 
+import org.example.core.Invoker;
+import org.example.core.exceptions.FieldValueIsNotCorrectException;
+
 public class Location {
     private int x;
 
@@ -9,9 +12,9 @@ public class Location {
     private Location(){}
 
     public Location(int x,  Float y,  Float z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        setX(x);
+        setY(y);
+        setZ(z);
     }
 
     private Float z;
@@ -33,11 +36,21 @@ public class Location {
     }
 
     public void setY(Float y) {
-        this.y = y;
+        if (y!=null || Invoker.getIsDataLoading()){
+            this.y = y;
+        }
+        else {
+            throw new FieldValueIsNotCorrectException();
+        }
     }
 
     public void setZ(Float z) {
-        this.z = z;
+        if (z!=null || Invoker.getIsDataLoading()){
+            this.z = z;
+        }
+        else {
+            throw new FieldValueIsNotCorrectException();
+        }
     }
 
     @Override

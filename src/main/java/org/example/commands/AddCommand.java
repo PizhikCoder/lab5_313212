@@ -6,7 +6,6 @@ import org.example.core.models.*;
 import org.example.core.validators.CommandsDataValidator;
 import org.example.interfaces.IPrinter;
 import org.example.interfaces.Validator;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;

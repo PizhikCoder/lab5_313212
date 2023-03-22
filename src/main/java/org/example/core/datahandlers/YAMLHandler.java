@@ -1,6 +1,5 @@
 package org.example.core.datahandlers;
 
-import org.example.core.models.MusicBand;
 import org.example.interfaces.IDataLoader;
 import org.example.interfaces.IDataSaver;
 import org.example.interfaces.IPrinter;
@@ -13,6 +12,8 @@ import java.io.*;
 public class YAMLHandler implements IDataSaver, IDataLoader {
     private String filePath;
     private IPrinter printer;
+
+    private boolean isDataLoading = false;
 
     public YAMLHandler(String path, IPrinter printer){
         filePath = path;
@@ -35,6 +36,7 @@ public class YAMLHandler implements IDataSaver, IDataLoader {
         }
     }
 
+
     @Override
     public <T> boolean save(T data) {
         Yaml yaml = new Yaml();
@@ -47,5 +49,15 @@ public class YAMLHandler implements IDataSaver, IDataLoader {
             printer.print("Exception log!\nSomething went wrong while file was writing.\nCheck file path and file validity...");
             return  false;
         }
+    }
+
+    @Override
+    public boolean getIsDataLoading() {
+        return isDataLoading;
+    }
+
+    @Override
+    public void setIsDataLoading(boolean status) {
+        this.isDataLoading = status;
     }
 }

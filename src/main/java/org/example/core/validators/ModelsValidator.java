@@ -1,11 +1,8 @@
 package org.example.core.validators;
-
 import org.example.core.Invoker;
 import org.example.core.models.*;
-
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -28,7 +25,7 @@ public class ModelsValidator {
                 musicBand.setId(generateNewId(usedIDs));
             }
             usedIDs.add(musicBand.getId());
-            if (!modelCheck(musicBand, invoker)){
+            if (!modelCheck(musicBand)){
                 invoker.getPrinter().print("Something's wrong with model ID: " + musicBand.getId());
                 invoker.getPrinter().print("The model will automatically be deleted after the \"save\" command is executed. But you can check the values in the data.yaml file yourself to avoid losses and then simply reload the programme.");
             }
@@ -44,10 +41,9 @@ public class ModelsValidator {
     /**
      * Checks the only one model.
      * @param musicBand
-     * @param invoker
      * @return
      */
-    public static Boolean modelCheck(MusicBandClone musicBand, Invoker invoker){
+    public static Boolean modelCheck(MusicBandClone musicBand){
 
 
         return nameValueCheck(musicBand.getName())

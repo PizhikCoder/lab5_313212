@@ -1,6 +1,5 @@
 package org.example.core.validators;
 
-import org.example.core.Invoker;
 import org.example.core.exceptions.FileAccessException;
 import org.example.core.exceptions.FileDoesNotExist;
 
